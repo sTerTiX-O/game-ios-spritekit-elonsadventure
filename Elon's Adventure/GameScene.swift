@@ -23,7 +23,7 @@ class GameScene: SKScene {
     var knobRadius : CGFloat = 50.0
     
     //didmove
-    override func didMove(to view: SKView){
+    override func didMove(to view: SKView) {
         player = childNode(withName: "player")
         joystick = childNode(withName: "joystick")
         joystickKnob = joystick?.childNode(withName: "knob")
@@ -66,7 +66,19 @@ extension GameScene {
     }
     //Touch End
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        resetKnobPosition()
     }
     
 }
+// MARK: Action
+extension GameScene {
+    func resetKnobPosition() {
+        let initialPoint = CGPoint(x: 0, y: 0)
+        let moveBack = SKAction.move(to: initialPoint, duration: 0.1)
+        moveBack.timingMode = .linear
+        joystickKnob?.run(moveBack)
+        joystickAction = false
+    }
+}
+
 
