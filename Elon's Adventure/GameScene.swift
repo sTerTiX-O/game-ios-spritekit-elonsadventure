@@ -26,12 +26,16 @@ class GameScene: SKScene {
     var previousTimeInterval : TimeInterval = 0
     var playerIsFacingRight = true
     let playerSpeed = 4.0
+    
+    //Player state
+    var playerStateMachine : GKStateMachine!
 
     //didmove
     override func didMove(to view: SKView) {
         player = childNode(withName: "player")
         joystick = childNode(withName: "joystick")
         joystickKnob = joystick?.childNode(withName: "knob")
+        playerStateMachine = GKStateMachine(states: [])
     }
     
 }
