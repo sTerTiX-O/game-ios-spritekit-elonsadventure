@@ -103,6 +103,21 @@ extension GameScene {
         let xDisplacement = ((deltaTime * playerSpeed) * xPosition)
         let displacement = CGVector(dx: xDisplacement, dy: 0)
         let move = SKAction.move(by: displacement, duration: 0)
-        player?.run(move)
+        let faceAction : SKAction!
+        let movingRight = xPosition > 0
+        let movingLeft = xPosition < 0
+        if movingLeft && playerIsFacingRight {
+            playerIsFacingRight = false
+            let faceMovement = SKAction.scaleX(to: -1, duration: 0.0)
+            faceAction = SKAction.sequence([move, faceMovement])
+        }
+        else if movingRight && !playerIsFacingRight {
+            playerIsFacingRight = true
+            let faceMovement = SKAction.scaleX(to: 1, duration: 0.0)
+            faceAction = SKAction.sequence([move, faceMovement])
+        } else {
+            faceAction = move
+        }
+        player?.run(faceAction)
     }
 }

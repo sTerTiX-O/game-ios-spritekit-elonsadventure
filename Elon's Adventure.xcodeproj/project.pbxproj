@@ -17,6 +17,7 @@
 		8B8E01C52561C6D0007F61AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E01C32561C6D0007F61AA /* LaunchScreen.storyboard */; };
 		8B8E01D02561C6D0007F61AA /* Elon_s_AdventureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E01CF2561C6D0007F61AA /* Elon_s_AdventureTests.swift */; };
 		8B8E01DB2561C6D1007F61AA /* Elon_s_AdventureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E01DA2561C6D1007F61AA /* Elon_s_AdventureUITests.swift */; };
+		EDB1A5C9256AAE7C004A4CD3 /* playerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB1A5C8256AAE7C004A4CD3 /* playerStateMachine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		8B8E01D62561C6D1007F61AA /* Elon's AdventureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Elon's AdventureUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E01DA2561C6D1007F61AA /* Elon_s_AdventureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elon_s_AdventureUITests.swift; sourceTree = "<group>"; };
 		8B8E01DC2561C6D1007F61AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDB1A5C8256AAE7C004A4CD3 /* playerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = playerStateMachine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				8B8E01B62561C6CF007F61AA /* GameScene.sks */,
 				8B8E01B82561C6CF007F61AA /* Actions.sks */,
 				8B8E01BA2561C6CF007F61AA /* GameScene.swift */,
+				EDB1A5C8256AAE7C004A4CD3 /* playerStateMachine.swift */,
 				8B8E01BC2561C6CF007F61AA /* GameViewController.swift */,
 				8B8E01BE2561C6CF007F61AA /* Main.storyboard */,
 				8B8E01C12561C6D0007F61AA /* Assets.xcassets */,
@@ -269,6 +272,7 @@
 			files = (
 				8B8E01BB2561C6CF007F61AA /* GameScene.swift in Sources */,
 				8B8E01BD2561C6CF007F61AA /* GameViewController.swift in Sources */,
+				EDB1A5C9256AAE7C004A4CD3 /* playerStateMachine.swift in Sources */,
 				8B8E01B52561C6CF007F61AA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
