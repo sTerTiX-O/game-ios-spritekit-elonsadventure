@@ -35,7 +35,7 @@ class GameScene: SKScene {
         player = childNode(withName: "player")
         joystick = childNode(withName: "joystick")
         joystickKnob = joystick?.childNode(withName: "knob")
-        playerStateMachine = GKStateMachine(states: [])
+        playerStateMachine = GKStateMachine(states: [JumpingState(playerNode: player!)])
     }
     
 }
@@ -48,6 +48,11 @@ extension GameScene {
             if let joystickKnob = joystickKnob {
                 let location = touch.location(in: joystick!)
                 joystickAction = joystickKnob.frame.contains(location)
+            }
+            
+            let location = touch.location(in: self)
+            if !(joystick?.contains(location))! {
+                playerStateMachine.enter(JumpingState.self)
             }
         }
     }
