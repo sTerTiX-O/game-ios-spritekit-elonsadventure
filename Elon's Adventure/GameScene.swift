@@ -35,7 +35,16 @@ class GameScene: SKScene {
         player = childNode(withName: "player")
         joystick = childNode(withName: "joystick")
         joystickKnob = joystick?.childNode(withName: "knob")
-        playerStateMachine = GKStateMachine(states: [JumpingState(playerNode: player!)])
+        playerStateMachine = GKStateMachine(states: [
+        JumpingState(playerNode: player!),
+        WalkingState(playerNode: player!),
+        IdleState(playerNode: player!),
+        LandingState(playerNode: player!),
+        StunnedState(playerNode: player!),
+        ])
+        
+        playerStateMachine.enter(IdleState.self)
+        
     }
     
 }
@@ -109,6 +118,13 @@ extension GameScene {
         // Player movement
         guard let joystickKnob = joystickKnob else { return }
         let xPosition = Double(joystickKnob.position.x)
+        let positivePosition = xPosition < 0 ? -xPosition : xPosition
+
+        if floor(positivePosition) != 0 {
+            playerStateMachine.enter(WalkingState.self)
+        } else {
+            playerStateMachine.enter(IdleState.self)
+        }
         let xDisplacement = ((deltaTime * playerSpeed) * xPosition)
         let displacement = CGVector(dx: xDisplacement, dy: 0)
         let move = SKAction.move(by: displacement, duration: 0)
