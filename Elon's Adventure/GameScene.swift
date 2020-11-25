@@ -24,9 +24,14 @@ class GameScene: SKScene {
     
     //Boolean
     var joystickAction = false
+    var rewardIsNotTouched = true
     
     //Measure
     var knobRadius : CGFloat = 50.0
+    
+    // Score
+    let scoreLabel = SKLabelNode()
+    var score = 0
     
     // Sprite Engine
     var previousTimeInterval : TimeInterval = 0
@@ -61,8 +66,19 @@ class GameScene: SKScene {
         
         playerStateMachine.enter(IdleState.self)
         
+        // Timer
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {(timer) in
+            self.spawnMeteor()
+        }
+        
+        scoreLabel.position = CGPoint(x: (cameraNode?.position.x)! + 310, y: 140)
+        scoreLabel.fontColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+        scoreLabel.fontSize = 24
+        scoreLabel.fontName = "AvenirNext-Bold"
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.text = String(score)
+        cameraNode?.addChild(scoreLabel)
     }
-    
 }
 
 // MARK: Touches
@@ -118,6 +134,10 @@ extension GameScene {
         joystickKnob?.run(moveBack)
         joystickAction = false
     }
+    func rewardTouch() {
+        score += 1
+        scoreLabel.text = String(score)
+    }
 }
 
 // MARK: Game Loop
@@ -130,6 +150,8 @@ extension GameScene {
     override func update(_ currentTime: TimeInterval) {
         let deltaTime = currentTime - previousTimeInterval
         previousTimeInterval = currentTime
+        
+        rewardIsNotTouched = true
         
         //Camera
         cameraNode?.position.x = player!.position.x
@@ -212,5 +234,86 @@ extension GameScene: SKPhysicsContactDelegate {
             let die = SKAction.move(to: CGPoint(x: -300, y: -75), duration: 0.0)
             player?.run(die)
         }
+        
+        if collision.matches(.player, .ground) {
+            playerStateMachine.enter(LandingState.self)
+        }
+        
+        if collision.matches(.player, .reward) {
+
+            if contact.bodyA.node?.name == "jewel" {
+                contact.bodyA.node?.physicsBody?.categoryBitMask = 0
+                contact.bodyA.node?.removeFromParent()
+                print("My gigi")
+            
+                }
+                else if contact.bodyB.node?.name == "jewel" {
+                    contact.bodyB.node?.physicsBody?.categoryBitMask = 0
+                }
+
+                if rewardIsNotTouched {
+                    rewardTouch()
+                    rewardIsNotTouched = false
+                }
+            }
+        
+        if collision.matches(.ground, .killing) {
+            if contact.bodyA.node?.name == "Meteor", let meteor = contact.bodyA.node {
+                    createMolten(at: meteor.position)
+                    meteor.removeFromParent()
+                }
+
+                if contact.bodyB.node?.name == "Meteor", let meteor = contact.bodyB.node {
+                    createMolten(at: meteor.position)
+                    meteor.removeFromParent()
+            }
+        }
+    }
+}
+
+// MARK: Meteor
+extension GameScene {
+    func spawnMeteor() {
+        
+        let node = SKSpriteNode(imageNamed: "meteor")
+        node.name = "Meteor"
+        let randomXPosition = Int(arc4random_uniform(UInt32(self.size.width)))
+        
+        node.position = CGPoint(x: randomXPosition, y: 270)
+        node.anchorPoint = CGPoint(x: 0.5, y: 1)
+        node.zPosition = 5
+        
+        let physicsBody = SKPhysicsBody(circleOfRadius: 30)
+        node.physicsBody = physicsBody
+
+        physicsBody.categoryBitMask = Collision.Masks.killing.bitmask
+        physicsBody.collisionBitMask = Collision.Masks.player.bitmask | Collision.Masks.ground.bitmask
+        physicsBody.contactTestBitMask = Collision.Masks.player.bitmask | Collision.Masks.ground.bitmask
+        physicsBody.fieldBitMask = Collision.Masks.player.bitmask | Collision.Masks.ground.bitmask
+
+        physicsBody.affectedByGravity = true
+        physicsBody.allowsRotation = false
+        physicsBody.restitution = 0.2
+        physicsBody.friction = 10
+
+        addChild(node)
+    }
+    
+    func createMolten(at position: CGPoint) {
+        let node = SKSpriteNode(imageNamed: "molten")
+        node.position.x = position.x
+        node.position.y = position.y - 55
+        node.zPosition = 4
+
+        addChild(node)
+
+        let action = SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.1),
+            SKAction.wait(forDuration: 3.0),
+            SKAction.fadeOut(withDuration: 0.2),
+            SKAction.removeFromParent(),
+            ])
+
+            node.run(action)
     }
 }
