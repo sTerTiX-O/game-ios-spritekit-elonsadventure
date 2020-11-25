@@ -38,6 +38,9 @@ class GameScene: SKScene {
 
     //didmove
     override func didMove(to view: SKView) {
+        
+        physicsWorld.contactDelegate = self
+        
         player = childNode(withName: "player")
         joystick = childNode(withName: "joystick")
         joystickKnob = joystick?.childNode(withName: "knob")
@@ -179,5 +182,35 @@ extension GameScene {
         let parallax5 = SKAction.moveTo(x: (cameraNode?.position.x)!, duration: 0.0)
         stars?.run(parallax5)
         
+    }
+}
+
+
+// MARK: Collision
+extension GameScene: SKPhysicsContactDelegate {
+    
+    struct Collision {
+        
+        enum Masks: Int {
+            case killing, player, reward, ground
+            var bitmask: UInt32 { return 1 << self.rawValue }
+            
+        }
+        
+        let masks : (first : UInt32, second : UInt32)
+
+        func matches (_ first : Masks, _ second : Masks) -> Bool {
+            return (first.bitmask == masks.first && second.bitmask == masks.second) ||
+            (first.bitmask == masks.second && second.bitmask == masks.first)
+        }
+    }
+    func didBegin(_ contact: SKPhysicsContact) {
+
+        let collision = Collision(masks: (first: contact.bodyA.categoryBitMask, second: contact.bodyB.categoryBitMask))
+        
+        if collision.matches( .player, .killing) {
+            let die = SKAction.move(to: CGPoint(x: -300, y: -75), duration: 0.0)
+            player?.run(die)
+        }
     }
 }
