@@ -25,6 +25,7 @@ class GameScene: SKScene {
     //Boolean
     var joystickAction = false
     var rewardIsNotTouched = true
+    var isHit = false
     
     //Measure
     var knobRadius : CGFloat = 50.0
@@ -32,6 +33,10 @@ class GameScene: SKScene {
     // Score
     let scoreLabel = SKLabelNode()
     var score = 0
+    
+    // Hearts
+    var heartsArray = [SKSpriteNode]()
+    let heartContainer = SKSpriteNode()
     
     // Sprite Engine
     var previousTimeInterval : TimeInterval = 0
@@ -65,6 +70,12 @@ class GameScene: SKScene {
         ])
         
         playerStateMachine.enter(IdleState.self)
+        
+        // Hearts
+        heartContainer.position = CGPoint(x: -300, y: 140)
+        heartContainer.zPosition = 5
+        cameraNode?.addChild(heartContainer)
+        fillHearts(count: 3)
         
         // Timer
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {(timer) in
@@ -138,6 +149,48 @@ extension GameScene {
         score += 1
         scoreLabel.text = String(score)
     }
+    
+    func fillHearts(count: Int) {
+        for index in 1...count {
+            let heart = SKSpriteNode(imageNamed: "heart")
+            let xPosition = heart.size.width * CGFloat(index - 1)
+            heart.position = CGPoint(x: xPosition, y: 0)
+            heartsArray.append(heart)
+            heartContainer.addChild(heart)
+        }
+    }
+    
+    func loseHeart() {
+        if isHit == true {
+            let lastElementIndex = heartsArray.count - 1
+            if heartsArray.indices.contains(lastElementIndex - 1) {
+                let lastHeart = heartsArray[lastElementIndex]
+                lastHeart.removeFromParent()
+                heartsArray.remove(at: lastElementIndex)
+                Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { (timer) in
+                    self.isHit = false
+                }
+            }
+            else {
+                dying()
+            }
+            invincible()
+        }
+    }
+    
+    func invincible() {
+        player?.physicsBody?.categoryBitMask = 0
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { (timer) in
+            self.player?.physicsBody?.categoryBitMask = 2
+        }
+    }
+    
+    func dying() {
+        let dieAction = SKAction.move(to: CGPoint(x: -300, y: 0), duration: 0.1)
+        player?.run(dieAction)
+        self.removeAllActions()
+        fillHearts(count: 3)
+    }
 }
 
 // MARK: Game Loop
@@ -209,7 +262,7 @@ extension GameScene {
 
 
 // MARK: Collision
-extension GameScene: SKPhysicsContactDelegate {
+extension GameScene: SKPhysicsContactDelegate { 
     
     struct Collision {
         
@@ -231,8 +284,10 @@ extension GameScene: SKPhysicsContactDelegate {
         let collision = Collision(masks: (first: contact.bodyA.categoryBitMask, second: contact.bodyB.categoryBitMask))
         
         if collision.matches( .player, .killing) {
-            let die = SKAction.move(to: CGPoint(x: -300, y: -75), duration: 0.0)
-            player?.run(die)
+            loseHeart()
+            isHit = true
+            
+            playerStateMachine.enter(StunnedState.self)
         }
         
         if collision.matches(.player, .ground) {
@@ -244,8 +299,7 @@ extension GameScene: SKPhysicsContactDelegate {
             if contact.bodyA.node?.name == "jewel" {
                 contact.bodyA.node?.physicsBody?.categoryBitMask = 0
                 contact.bodyA.node?.removeFromParent()
-                print("My gigi")
-            
+                
                 }
                 else if contact.bodyB.node?.name == "jewel" {
                     contact.bodyB.node?.physicsBody?.categoryBitMask = 0
