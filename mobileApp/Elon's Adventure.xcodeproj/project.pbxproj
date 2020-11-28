@@ -17,6 +17,9 @@
 		8B8E01C52561C6D0007F61AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B8E01C32561C6D0007F61AA /* LaunchScreen.storyboard */; };
 		8B8E01D02561C6D0007F61AA /* Elon_s_AdventureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E01CF2561C6D0007F61AA /* Elon_s_AdventureTests.swift */; };
 		8B8E01DB2561C6D1007F61AA /* Elon_s_AdventureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8E01DA2561C6D1007F61AA /* Elon_s_AdventureUITests.swift */; };
+		ED520B07257050D800AED6C1 /* CentralGameServerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED520B06257050D800AED6C1 /* CentralGameServerService.swift */; };
+		ED520B0D257051D900AED6C1 /* GameServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED520B0C257051D900AED6C1 /* GameServer.swift */; };
+		ED520B162570530200AED6C1 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED520B152570530200AED6C1 /* NetworkHelper.swift */; };
 		EDB1A5C9256AAE7C004A4CD3 /* playerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB1A5C8256AAE7C004A4CD3 /* playerStateMachine.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +57,9 @@
 		8B8E01D62561C6D1007F61AA /* Elon's AdventureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Elon's AdventureUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B8E01DA2561C6D1007F61AA /* Elon_s_AdventureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elon_s_AdventureUITests.swift; sourceTree = "<group>"; };
 		8B8E01DC2561C6D1007F61AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED520B06257050D800AED6C1 /* CentralGameServerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralGameServerService.swift; sourceTree = "<group>"; };
+		ED520B0C257051D900AED6C1 /* GameServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServer.swift; sourceTree = "<group>"; };
+		ED520B152570530200AED6C1 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		EDB1A5C8256AAE7C004A4CD3 /* playerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = playerStateMachine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +111,8 @@
 		8B8E01B32561C6CF007F61AA /* Elon's Adventure */ = {
 			isa = PBXGroup;
 			children = (
+				ED520B0B257051A800AED6C1 /* Model */,
+				ED520B052570508E00AED6C1 /* Services */,
 				8B8E01B42561C6CF007F61AA /* AppDelegate.swift */,
 				8B8E01B62561C6CF007F61AA /* GameScene.sks */,
 				8B8E01B82561C6CF007F61AA /* Actions.sks */,
@@ -135,6 +143,31 @@
 				8B8E01DC2561C6D1007F61AA /* Info.plist */,
 			);
 			path = "Elon's AdventureUITests";
+			sourceTree = "<group>";
+		};
+		ED520B052570508E00AED6C1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				ED520B14257052E900AED6C1 /* Helpers */,
+				ED520B06257050D800AED6C1 /* CentralGameServerService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		ED520B0B257051A800AED6C1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ED520B0C257051D900AED6C1 /* GameServer.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ED520B14257052E900AED6C1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				ED520B152570530200AED6C1 /* NetworkHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,9 +303,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED520B162570530200AED6C1 /* NetworkHelper.swift in Sources */,
 				8B8E01BB2561C6CF007F61AA /* GameScene.swift in Sources */,
 				8B8E01BD2561C6CF007F61AA /* GameViewController.swift in Sources */,
 				EDB1A5C9256AAE7C004A4CD3 /* playerStateMachine.swift in Sources */,
+				ED520B07257050D800AED6C1 /* CentralGameServerService.swift in Sources */,
+				ED520B0D257051D900AED6C1 /* GameServer.swift in Sources */,
 				8B8E01B52561C6CF007F61AA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
