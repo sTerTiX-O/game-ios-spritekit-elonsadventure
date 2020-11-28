@@ -7,13 +7,17 @@ import uuid
 app = Flask(__name__)
 
 
+#
+# Exemple d'appel avec curl
+# curl http://127.0.0.1:5010//api/score/update/game/ElonAdventures/session/230847234/player/LaMerde/score/12
+#
 @app.route("/api/score/update/game/<gameId>/session/<sessionId>/player/<playerId>/score/<score>")
 def updateScore(gameId, sessionId, playerId, score):
 
     uuidScoreUpdate = uuid.uuid4().hex
     timeServerScoreUpdate = int(time.time())
 
-    print('Game[{}]/Session[{}] - Le score de [{}] est maintenant de =[{}]'.format(gameId, sessionId, playerId, score))    
+    print('Game[{}]/Session[{}] - Le score de [{}] est maintenant de [{}]'.format(gameId, sessionId, playerId, score))    
     
     messageRetour = {
         "scoreUpdateUUID" : uuidScoreUpdate,
