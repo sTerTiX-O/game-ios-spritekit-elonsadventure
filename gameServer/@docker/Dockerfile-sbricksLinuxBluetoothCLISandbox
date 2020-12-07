@@ -1,0 +1,18 @@
+FROM python:3.7.9-buster as builder
+
+#  Define the current directory for all RUN, CMD, ADD, COPY, ... commands
+RUN mkdir -p /opt/proutechos/elonsadventure-server
+WORKDIR /opt/proutechos/elonsadventure-server
+
+# Fetch the source code
+#RUN git clone https://github.com/sTerTiX-O/game-ios-spritekit-elonsadventure.git
+
+# Install tools to turn the code into 'production mode' (minifying, obfuscation, ...)
+#pyminifier
+
+COPY "./entrypoint.sh" "/opt/proutechos/elonsadventure-server/entrypoint.sh"
+ENTRYPOINT "./entrypoint.sh"
+CMD "Connardo"
+
+
+#FROM python:3.7.9-slim-buster as production

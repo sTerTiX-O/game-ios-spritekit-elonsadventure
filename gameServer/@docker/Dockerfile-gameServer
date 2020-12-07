@@ -1,0 +1,45 @@
+FROM python:3.7.9-buster as builder
+
+LABEL maintainer="nfonrose@gmail.com"
+
+# Define a few convenience commands
+RUN echo "alias ll='ls -laG'" >> /root/.bashrc
+
+
+#  Define the directory structure
+#   - create the directory structure for the project
+RUN mkdir -p /opt/proutechos/elonsadventure-server
+#   - define the current directory for all RUN, CMD, ADD, COPY, ... commands
+WORKDIR /opt/proutechos/elonsadventure-server
+
+
+# Fetch the source code and move to the right branch
+#  - ensure the image is rebuilt when the repository change (cf: https://stackoverflow.com/a/39278224/10825809)
+ADD https://api.github.com/repos/sTerTiX-O/game-ios-spritekit-elonsadventure/git/refs/heads/FEATURE_BRANCH_ServerConnexion version.json
+#  - fetch the repo
+RUN git clone "https://github.com/sTerTiX-O/game-ios-spritekit-elonsadventure.git" \
+ && cd game-ios-spritekit-elonsadventure \
+ && git fetch origin "FEATURE_BRANCH_ServerConnexion" \
+ && git reset --hard "origin/FEATURE_BRANCH_ServerConnexion"
+
+
+# Install/execute the tools to turn the code into 'production mode' (minifying, obfuscation, ...)
+#   - define the new current directory for all RUN, CMD, ADD, COPY, ... commands
+WORKDIR /opt/proutechos/elonsadventure-server/game-ios-spritekit-elonsadventure/gameServer
+#  - create the Virtual Environment and download the requirements
+RUN python3 -m venv env \
+      && /bin/bash -c "source ./env/bin/activate" \
+      && pip install -r "requirements.txt"
+# #  - minify/ the code
+# #RUN pyminifier
+
+
+# # Define the ENTRYPOINT
+# COPY "./entrypoint-gameServer.sh" "/opt/proutechos/elonsadventure-server/entrypoint-gameServer.sh"
+# ENTRYPOINT "./entrypoint-gameServer.sh"
+# #  - add an empty CMD for now (which can be overridden with 'server options')
+CMD ""
+ENTRYPOINT "/opt/proutechos/elonsadventure-server/game-ios-spritekit-elonsadventure/gameServer/@docker/entrypoint-gameServer.sh"
+
+
+#FROM python:3.7.9-slim-buster as production
