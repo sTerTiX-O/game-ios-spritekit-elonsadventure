@@ -8,7 +8,8 @@ docker build -t proutechos/elonsadventure-server ./@docker
 # ----------------------------------------------------------------------
 #
 #
-#  Things that work, but I don't really know why (why is the CMD specified on the command-line executed inside the container; what is the ENTRYPOINT it gets appended to)
+#  Things that work, but I don't really know why
+#    - why is the CMD specified on the command-line executed inside the container (and what is the ENTRYPOINT it gets appended to)
 #
 #
 # ----------------------------------------------------------------------
@@ -43,17 +44,19 @@ docker run --rm --name container001 proutechos/elonsadventure-server bash -c "ls
 # Run a container and:
 #   - execute its entrypoint (which executes a *fixed* python server; cf 'entrypoint-gameServer.sh')
 #   - kill the container when it's done executing the entrypoint
-# REMARK: Add '--interactive --tty / -it' if you want to be able to Ctrl+C it
+#   - can be shot via Ctrl+C since it has the -it option (--interactive --tty)
 docker run --rm -it --name container001 proutechos/elonsadventure-server 
 
 # Run a container and:
 #   - execute its entrypoint (which executes a *generic* python server (cf 'entrypoint-python-generic.sh'), but DOESN'T OVERRIDE its default CMD parameter)
-# REMARK: Add '--interactive --tty / -it' if you want to be able to Ctrl+C it
+#   - kill the container when it's done executing the entrypoint
+#   - can be shot via Ctrl+C since it has the -it option (--interactive --tty)
 docker run --rm -it --name container001 proutechos/elonsadventure-server --entrypoint "./@docker/entrypoint-python-generic.sh"
 
 # Run a container and:
 #   - execute its entrypoint (which executes a *generic* python server (cf 'entrypoint-python-generic.sh'), and OVERRIDES its default CMD parameter to choose a specific python server)
-# REMARK: Add '--interactive --tty / -it' if you want to be able to Ctrl+C it
+#   - kill the container when it's done executing the entrypoint
+#   - can be shot via Ctrl+C since it has the -it option (--interactive --tty)
 docker run --rm -it --name container001 proutechos/elonsadventure-server --entrypoint "./@docker/entrypoint-python-generic.sh" game-elonsadventure-server
 
 
