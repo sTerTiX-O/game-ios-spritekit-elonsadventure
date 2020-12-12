@@ -45,7 +45,7 @@ docker run --rm --name container001 proutechos/elonsadventure-server bash -c "ls
 #   - execute its entrypoint (which executes a *fixed* python server; cf 'entrypoint-gameServer.sh')
 #   - kill the container when it's done executing the entrypoint
 #   - can be shot via Ctrl+C since it has the -it option (--interactive --tty)
-docker run --rm -it --name container001 proutechos/elonsadventure-server 
+docker run --rm -it --name container001 -p 8080:7500 proutechos/elonsadventure-server 
 
 # Run a container and:
 #   - execute its entrypoint (which executes a *generic* python server (cf 'entrypoint-python-generic.sh'), but DOESN'T OVERRIDE its default CMD parameter)
