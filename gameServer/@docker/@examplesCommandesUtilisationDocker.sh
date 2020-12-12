@@ -1,4 +1,19 @@
 
+
+
+# ================================================================================================
+#
+#
+#     Voir le document créé à l'occasion "Docker le bases", stocké sur Google Drive
+#
+#     https://docs.google.com/document/d/1KgPMkyNNpRPKiaV5ZWbptvcm8EnoIRL0stxTvjFw1tk/edit#heading=h.qd1ku6pizov2
+#
+#
+# ================================================================================================
+
+
+
+
 # Build the Docker image defined in ./@docker
 docker build -t proutechos/elonsadventure-server ./@docker
 
