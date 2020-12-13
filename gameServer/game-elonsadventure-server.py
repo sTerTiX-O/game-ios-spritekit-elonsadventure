@@ -2,6 +2,7 @@
 from flask import Flask, render_template, jsonify
 import time
 import uuid
+import os
 
 
 app = Flask(__name__)
@@ -9,7 +10,7 @@ app = Flask(__name__)
 
 #
 # Exemple d'appel avec curl
-#    curl http://127.0.0.1:5010//api/score/update/game/ElonAdventures/session/230847234/player/player23234/score/12
+#    curl http://127.0.0.1:5010/api/score/update/game/ElonAdventures/session/230847234/player/player23234/score/12
 #    curl --insecure https://fonf.xxxxxx.xyz:0000/api/score/update/game/ElonAdventures/session/230847234/player/player23234/score/14
 #
 # Remarque: Pour que l'accès depuis l'extérieur fonctionne, il faut configurer le port forwarding au niveau des routeurs
@@ -40,5 +41,24 @@ def updateScore(gameId, sessionId, playerId, score):
 
 # Lance le serveur
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='7500', debug=True, ssl_context='adhoc')
+
+    # Rend le port d'écoute configurable (utile notamment pour GCP CloudRun)
+    try:
+        SERVER_PORT = os.getenv('SERVER_PORT')
+    except:    
+        SERVER_PORT='7500'
+
+    # Rend l'écoute sur HTTPS configurable (doit être désactivé pour GCP CloudRun, car c'est lui qui fait la terminaison TLS)
+    try:
+        DO_NOT_USE_HTTPS = (os.getenv('DO_NOT_USE_HTTPS') is not None) and (os.getenv('DO_NOT_USE_HTTPS').lower() == "true")
+    except:    
+        DO_NOT_USE_HTTPS = False
+
+    # Lance le serveur
+    print("Environment variables SERVER_PORT[{}] DO_NOT_USE_HTTPS[{}]".format(os.getenv('SERVER_PORT'), os.getenv('DO_NOT_USE_HTTPS')))
+    print("  -> running proutechos/elonsadventure-server with SERVER_PORT[{}] DO_NOT_USE_HTTPS[{}]".format(SERVER_PORT, DO_NOT_USE_HTTPS))
+    if DO_NOT_USE_HTTPS:
+        app.run(host='0.0.0.0', port=SERVER_PORT, debug=True)
+    else:
+        app.run(host='0.0.0.0', port=SERVER_PORT, debug=True, ssl_context='adhoc')
 

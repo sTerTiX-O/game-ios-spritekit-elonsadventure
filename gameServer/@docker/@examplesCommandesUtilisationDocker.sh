@@ -20,31 +20,6 @@ docker build -t proutechos/elonsadventure-server ./@docker
 
 
 
-# ----------------------------------------------------------------------
-#
-#
-#  Things that work, but I don't really know why
-#    - why is the CMD specified on the command-line executed inside the container (and what is the ENTRYPOINT it gets appended to)
-#
-#
-# ----------------------------------------------------------------------
-
-
-# Run a container for a single task (specified using the last parameter)
-# Remarks:
-#   the container is detroyed after the task execution thanks to "-rm" (one would need to "docker rm" it without this option)
-docker run --rm --name container001 proutechos/elonsadventure-server bash -c "ls -laG /opt/proutechos"
-
-# Run a container for a list of tasks (specified using the last parameter)
-# Remark:
-#   Each execution start from a clean slate (which the first 'ls' shows)
-docker run --rm --name container001 proutechos/elonsadventure-server bash -c "ls -laG /opt/proutechos; touch /opt/proutechos/coucou.txt; ls -laG /opt/proutechos"
-
-
-
-
-
-
 
 
 # ----------------------------------------------------------------------
@@ -99,3 +74,32 @@ docker run --rm -it --entrypoint "/bin/bash" --name container001 proutechos/elon
 docker run -it --name "container001" proutechos/elonsadventure-server
 docker exec -it "container001" /bin/bash
 
+
+
+
+
+
+
+
+
+
+
+# ----------------------------------------------------------------------
+#
+#
+#  Things that work, but I don't really know why
+#    - why is the CMD specified on the command-line executed inside the container (and what is the ENTRYPOINT it gets appended to)
+#
+#
+# ----------------------------------------------------------------------
+
+
+# Run a container for a single task (specified using the last parameter)
+# Remarks:
+#   the container is detroyed after the task execution thanks to "-rm" (one would need to "docker rm" it without this option)
+docker run --rm --name container001 proutechos/elonsadventure-server bash -c "ls -laG /opt/proutechos"
+
+# Run a container for a list of tasks (specified using the last parameter)
+# Remark:
+#   Each execution start from a clean slate (which the first 'ls' shows)
+docker run --rm --name container001 proutechos/elonsadventure-server bash -c "ls -laG /opt/proutechos; touch /opt/proutechos/coucou.txt; ls -laG /opt/proutechos"
